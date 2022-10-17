@@ -1,23 +1,23 @@
 import React, {useEffect, useState} from "react";
 import {toast} from "react-toastify";
-import AddProduct from "./AddProduct";
-import Product from "./Product";
+import AddPicture from "./AddPicture";
+import Picture from "./Picture";
 import Loader from "../utils/Loader";
 import {NotificationError, NotificationSuccess} from "../utils/Notifications";
-import {buyProductAction, createProductAction, deleteProductAction, getProductsAction,} from "../../utils/marketplace";
+import {buyPictureAction, createPictureAction, likeAction, changepriceAction, pausesaleAction, resumesaleAction,  deletePictureAction, getPicturesAction,} from "../../utils/marketplace";
 import PropTypes from "prop-types";
 import {Row} from "react-bootstrap";
 
-const Products = ({address, fetchBalance}) => {
-    const [products, setProducts] = useState([]);
+const Pictures = ({address, fetchBalance}) => {
+    const [pictures, setPictures] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const getProducts = async () => {
+    const getPictures = async () => {
         setLoading(true);
-        getProductsAction()
-            .then(products => {
-                if (products) {
-                    setProducts(products);
+        getPicturesAction()
+            .then(pictures => {
+                if (pictures) {
+                    setPictures(pictures);
                 }
             })
             .catch(error => {
@@ -29,50 +29,116 @@ const Products = ({address, fetchBalance}) => {
     };
 
     useEffect(() => {
-        getProducts();
+        getPictures();
     }, []);
 
-    const createProduct = async (data) => {
+    const createPicture = async (data) => {
         setLoading(true);
-        createProductAction(address, data)
+        createPictureAction(address, data)
             .then(() => {
-                toast(<NotificationSuccess text="Product added successfully."/>);
-                getProducts();
+                toast(<NotificationSuccess text="Picture added successfully."/>);
+                getPictures();
                 fetchBalance(address);
             })
             .catch(error => {
                 console.log(error);
-                toast(<NotificationError text="Failed to create a product."/>);
+                toast(<NotificationError text="Failed to create a picture."/>);
                 setLoading(false);
             })
     };
 
-    const buyProduct = async (product, count) => {
+
+    const likePicture = async (picture) => {
         setLoading(true);
-        buyProductAction(address, product, count)
+        likeAction(address, picture.appId)
             .then(() => {
-                toast(<NotificationSuccess text="Product bought successfully"/>);
-                getProducts();
+                toast(<NotificationSuccess text="Picture liked successfully"/>);
+                getPictures();
                 fetchBalance(address);
             })
             .catch(error => {
                 console.log(error)
-                toast(<NotificationError text="Failed to purchase product."/>);
+                toast(<NotificationError text="Failed to like picture."/>);
                 setLoading(false);
             })
     };
 
-    const deleteProduct = async (product) => {
+
+    const changePrice = async (picture, price) => {
         setLoading(true);
-        deleteProductAction(address, product.appId)
+        changepriceAction(address, picture.appId, price)
             .then(() => {
-                toast(<NotificationSuccess text="Product deleted successfully"/>);
-                getProducts();
+                toast(<NotificationSuccess text="Price changed successfully"/>);
+                getPictures();
                 fetchBalance(address);
             })
             .catch(error => {
                 console.log(error)
-                toast(<NotificationError text="Failed to delete product."/>);
+                toast(<NotificationError text="Failed to change price."/>);
+                setLoading(false);
+            })
+    };
+
+    const pauseSale = async (picture) => {
+        setLoading(true);
+        pausesaleAction(address, picture.appId)
+            .then(() => {
+                toast(<NotificationSuccess text="Sale paused successfully"/>);
+                getPictures();
+                fetchBalance(address);
+            })
+            .catch(error => {
+                console.log(error)
+                toast(<NotificationError text="Failed to pause sale."/>);
+                setLoading(false);
+            })
+    };
+
+
+    const resumeSale = async (picture) => {
+        setLoading(true);
+        resumesaleAction(address, picture.appId)
+            .then(() => {
+                toast(<NotificationSuccess text="Sale resumed successfully"/>);
+                getPictures();
+                fetchBalance(address);
+            })
+            .catch(error => {
+                console.log(error)
+                toast(<NotificationError text="sale paused"/>);
+                setLoading(false);
+            })
+    };
+
+
+
+
+    const buyPicture = async (picture, count) => {
+        setLoading(true);
+        buyPictureAction(address, picture, count)
+            .then(() => {
+                toast(<NotificationSuccess text="Picture bought successfully"/>);
+                getPictures();
+                fetchBalance(address);
+            })
+            .catch(error => {
+                console.log(error)
+                toast(<NotificationError text="Failed to buy picture."/>);
+                setLoading(false);
+            })
+    };
+
+    const deletePicture = async (picture) => {
+        setLoading(true);
+        deletePictureAction(address, picture.appId)
+            .then(() => {
+                toast(<NotificationSuccess text="Picture deleted successfully"/>);
+                getPictures();
+                fetchBalance(address);
+            })
+            .catch(error => {
+                console.log(error)
+                toast(<NotificationError text="Failed to delete picture."/>);
                 setLoading(false);
             })
     };
@@ -83,16 +149,20 @@ const Products = ({address, fetchBalance}) => {
     return (
         <>
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1 className="fs-4 fw-bold mb-0">Street Food</h1>
-                <AddProduct createProduct={createProduct}/>
+                <h1 className="fs-4 fw-bold mb-0">Picturea</h1>
+                <AddPicture createPicture={createPicture}/>
             </div>
             <Row xs={1} sm={2} lg={3} className="g-3 mb-5 g-xl-4 g-xxl-5">
                 <>
-                    {products.map((product, index) => (
-                        <Product
+                    {pictures.map((picture, index) => (
+                        <Picture
                             address={address}
-                            product={product}
-                            buyProduct={buyProduct}
+                            picture={picture}
+                            buyPicture={buyPicture}
+                            changePrice = {changePrice}
+                            pauseSale = {pauseSale}
+                            resumeSale = {resumeSale}
+                            likePicture = {likePicture}
                             deleteProduct={deleteProduct}
                             key={index}
                         />
@@ -103,9 +173,9 @@ const Products = ({address, fetchBalance}) => {
     );
 };
 
-Products.propTypes = {
+Pictures.propTypes = {
     address: PropTypes.string.isRequired,
     fetchBalance: PropTypes.func.isRequired
 };
 
-export default Products;
+export default Pictures;

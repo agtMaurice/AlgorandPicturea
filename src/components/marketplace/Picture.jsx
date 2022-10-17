@@ -9,6 +9,7 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
         picture;
 
     const [count, setCount] = useState(1)
+    const [newprice, setNewprice] = useState(0)
 
     return (
         <Col key={appId}>
@@ -19,6 +20,10 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
                         <Identicon size={28} address={owner}/>
                         <Badge bg="secondary" className="ms-auto">
                             {sold} Sold
+                        </Badge>
+
+                        <Badge bg="secondary" className="ms-auto">
+                            {likes} likes
                         </Badge>
                     </Stack>
                 </Card.Header>
@@ -46,21 +51,69 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
                         </FloatingLabel>
                         <Button
                             variant="outline-dark"
-                            onClick={() => buyProduct(product, count)}
+                            onClick={() => buyPicture(picture, count)}
                             className="w-75 py-3"
                         >
                             Buy for {microAlgosToString(price) * count} ALGO
                         </Button>
-                        {product.owner === address &&
+                        {picture.owner === address &&
                             <Button
                                 variant="outline-danger"
-                                onClick={() => deleteProduct(product)}
+                                onClick={() => deleteProduct(picture)}
                                 className="btn"
                             >
                                 <i className="bi bi-trash"></i>
                             </Button>
                         }
-                    </Form>
+
+                        </Form>
+
+
+             {picture.owner !== address &&
+                            <Button
+                                variant="outline-danger"
+                                onClick={() => likePicture(picture)}
+                                className="btn"
+                            >
+                               <i className="bi bi-like"></i>
+                            </Button>
+                        }
+
+
+{picture.owner === address &&
+
+                            <Button
+                                variant="outline-danger"
+                                onClick={() => pauseSale(picture)}
+                                className="btn"
+                            >
+                                Pause Sale
+                            </Button>
+                        }
+
+
+                   {picture.owner === address &&
+                            <Button
+                                variant="outline-danger"
+                                onClick={() => pauseSale(picture)}
+                                className="btn"
+                            >
+                                Pause Sale
+                            </Button>
+                        }
+
+                   {picture.owner === address &&
+                            <Button
+                                variant="outline-danger"
+                                onClick={() => resumeSale(picture)}
+                                className="btn"
+                            >
+                                Resume Sale
+                            </Button>
+                        }
+
+
+                  
                 </Card.Body>
             </Card>
         </Col>

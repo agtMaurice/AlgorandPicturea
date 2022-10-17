@@ -64,9 +64,9 @@ const Pictures = ({address, fetchBalance}) => {
     };
 
 
-    const changePrice = async (picture, price) => {
+    const changePrice = async (picture, newprice) => {
         setLoading(true);
-        changepriceAction(address, picture.appId, price)
+        changepriceAction(address, picture.appId, newprice)
             .then(() => {
                 toast(<NotificationSuccess text="Price changed successfully"/>);
                 getPictures();
@@ -163,7 +163,7 @@ const Pictures = ({address, fetchBalance}) => {
                             pauseSale = {pauseSale}
                             resumeSale = {resumeSale}
                             likePicture = {likePicture}
-                            deleteProduct={deleteProduct}
+                            deleteProduct={deletePicture}
                             key={index}
                         />
                     ))}

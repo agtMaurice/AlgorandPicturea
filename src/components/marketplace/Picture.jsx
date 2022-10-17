@@ -59,7 +59,7 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
                         {picture.owner === address &&
                             <Button
                                 variant="outline-danger"
-                                onClick={() => deleteProduct(picture)}
+                                onClick={() => deletePicture(picture)}
                                 className="btn"
                             >
                                 <i className="bi bi-trash"></i>
@@ -81,14 +81,24 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
 
 
 {picture.owner === address &&
+    <>
+							<Form.Control
+								className={"pt-2 mb-1"}
+								type="number"
+								placeholder="Enter new price"
+								onChange={(e) => {
+									setNewprice(e.target.value);
+								}}
+							/>
 
-                            <Button
-                                variant="outline-danger"
-                                onClick={() => pauseSale(picture)}
-                                className="btn"
-                            >
-                                Pause Sale
-                            </Button>
+							<Button
+								variant="primary"
+								className={"mb-4"}
+								onClick={() => changePrice(picture, newprice)}
+							>
+							Change price
+							</Button>
+						</>
                         }
 
 
@@ -120,11 +130,11 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
     );
 };
 
-Product.propTypes = {
+Picture.propTypes = {
     address: PropTypes.string.isRequired,
-    product: PropTypes.instanceOf(Object).isRequired,
-    buyProduct: PropTypes.func.isRequired,
-    deleteProduct: PropTypes.func.isRequired
+    picture: PropTypes.instanceOf(Object).isRequired,
+    buyPicture: PropTypes.func.isRequired,
+    deletePicture: PropTypes.func.isRequired
 };
 
-export default Product;
+export default Picture;

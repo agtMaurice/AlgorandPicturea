@@ -237,20 +237,20 @@ export const resumesaleAction = async (senderAddress, picture) => {
 
 
 // Edit PRICE: Group transaction consisting of ApplicationCallTxn
-export const changepriceAction = async (senderAddress, picture, price) => {
+export const changepriceAction = async (senderAddress, picture, newprice) => {
     console.log("Change price...");
   
     let params = await algodClient.getTransactionParams().do();
   
     // Build required app args as Uint8Array
     let changepriceArg = new TextEncoder().encode("changeprice");
-    let price = new TextEncoder().encode(price);
+    let price = new TextEncoder().encode(newprice);
     let appArgs = [changepriceArg, price];
   
     // Create ApplicationCallTxn
     let appCallTxn = algosdk.makeApplicationCallTxnFromObject({
       from: senderAddress,
-      appIndex: blog.appId,
+      appIndex: picture.appId,
       onComplete: algosdk.OnApplicationComplete.NoOpOC,
       suggestedParams: params,
       appArgs: appArgs,
@@ -443,7 +443,7 @@ const getApplication = async (appId) => {
             sold = getField("SOLD", globalState).value.uint
         }
 
-        return new Product(name, image, description, price, likes, forsale, sold, appId, owner)
+        return new Picture(name, image, description, price, likes, forsale, sold, appId, owner)
     } catch (err) {
         return null;
     }

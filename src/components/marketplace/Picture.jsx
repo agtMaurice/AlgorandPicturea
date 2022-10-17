@@ -49,6 +49,7 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
                                 }}
                             />
                         </FloatingLabel>
+                        {picture.owner !== address && forsale === true &&
                         <Button
                             variant="outline-dark"
                             onClick={() => buyPicture(picture, count)}
@@ -56,6 +57,7 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
                         >
                             Buy for {microAlgosToString(price) * count} ALGO
                         </Button>
+                        }
                         {picture.owner === address &&
                             <Button
                                 variant="outline-danger"
@@ -71,16 +73,16 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
 
              {picture.owner !== address &&
                             <Button
-                                variant="outline-danger"
+                                variant="outline-danger mt-2"
                                 onClick={() => likePicture(picture)}
                                 className="btn"
                             >
-                               <i className="bi bi-like"></i>
+                               Like Picture
                             </Button>
                         }
 
 
-{picture.owner === address &&
+             {picture.owner === address &&
     <>
 							<Form.Control
 								className={"pt-2 mb-1"}

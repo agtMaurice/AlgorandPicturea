@@ -129,7 +129,7 @@ class Picturea:
             Approve()
         ])
 
-    # To delete a property.
+    # To delete a picture.
     def application_deletion(self):
         return Return(Txn.sender() == Global.creator_address())
 

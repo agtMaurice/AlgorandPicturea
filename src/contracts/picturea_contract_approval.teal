@@ -2,47 +2,114 @@
 txn ApplicationID
 int 0
 ==
-bnz main_l12
+bnz main_l16
 txn OnCompletion
 int DeleteApplication
 ==
-bnz main_l11
+bnz main_l15
 txna ApplicationArgs 0
 byte "like"
 ==
-bnz main_l10
+bnz main_l14
 txna ApplicationArgs 0
 byte "changeprice"
 ==
-bnz main_l9
+bnz main_l13
 txna ApplicationArgs 0
 byte "pausesale"
 ==
-bnz main_l8
+bnz main_l12
 txna ApplicationArgs 0
 byte "resumesale"
 ==
-bnz main_l7
+bnz main_l11
+txn OnCompletion
+int OptIn
+==
+bnz main_l10
+txna ApplicationArgs 0
+byte "buy"
+==
+bnz main_l9
 err
-main_l7:
+main_l9:
+txna ApplicationArgs 1
+btoi
+int 0
+>
+global GroupSize
+int 2
+==
+&&
+global CreatorAddress
+txn Sender
+!=
+&&
+byte "FORSALE"
+app_global_get
+int 1
+==
+&&
+gtxn 1 TypeEnum
+int pay
+==
+&&
+gtxn 1 Receiver
+global CreatorAddress
+==
+&&
+gtxn 1 Amount
+byte "PRICE"
+app_global_get
+txna ApplicationArgs 1
+btoi
+*
+==
+&&
+gtxn 1 Sender
+gtxn 0 Sender
+==
+&&
+assert
+byte "SOLD"
+byte "SOLD"
+app_global_get
+txna ApplicationArgs 1
+btoi
++
+app_global_put
+int 1
+return
+main_l10:
+txn Sender
+byte "LIKED"
+int 0
+app_local_put
+int 1
+return
+main_l11:
 byte "FORSALE"
 int 1
 app_global_put
 int 1
 return
-main_l8:
+main_l12:
 byte "FORSALE"
 int 0
 app_global_put
 int 1
 return
-main_l9:
+main_l13:
 byte "PRICE"
 txna ApplicationArgs 1
 app_global_put
 int 1
 return
-main_l10:
+main_l14:
+txn Sender
+byte "LIKED"
+int 1
+app_local_put
 byte "LIKES"
 byte "LIKES"
 app_global_get
@@ -51,19 +118,39 @@ int 1
 app_global_put
 int 1
 return
-main_l11:
+main_l15:
 txn Sender
 global CreatorAddress
 ==
 return
-main_l12:
+main_l16:
 txn NumAppArgs
 int 4
 ==
-assert
 txn Note
 byte "picturea:uv2"
 ==
+&&
+txna ApplicationArgs 3
+btoi
+int 0
+>
+&&
+txna ApplicationArgs 0
+len
+int 0
+>
+&&
+txna ApplicationArgs 1
+len
+int 0
+>
+&&
+txna ApplicationArgs 2
+len
+int 0
+>
+&&
 assert
 byte "NAME"
 txna ApplicationArgs 0
@@ -76,6 +163,7 @@ txna ApplicationArgs 2
 app_global_put
 byte "PRICE"
 txna ApplicationArgs 3
+btoi
 app_global_put
 byte "LIKES"
 int 0

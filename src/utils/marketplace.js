@@ -379,13 +379,14 @@ export const getPicturesAction = async () => {
             // Step 2: Get each application by application id
             let picture = await getApplication(appId)
             if (picture) {
-                picture.push(picture)
+                pictures.push(picture)
             }
         }
     }
     console.log("Pictures fetched.")
     return pictures
 }
+
 
 const getApplication = async (appId) => {
     try {

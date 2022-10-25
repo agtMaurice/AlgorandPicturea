@@ -5,8 +5,7 @@ import {microAlgosToString, truncateAddress} from "../../utils/conversions";
 import Identicon from "../utils/Identicon";
 
 const Picture = ({address, picture, buyPicture, deletePicture, likePicture, changePrice, pauseSale, resumeSale}) => {
-    const {name, image, description, price, likes, forsale, sold, appId, owner} =
-        picture;
+    const {name, image, description, price, likes, forsale, sold, appId, owner} = picture;
 
     const [count, setCount] = useState(1)
     const [newprice, setNewprice] = useState(0)
@@ -49,13 +48,13 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
                                 }}
                             />
                         </FloatingLabel>
-                        {picture.owner !== address && forsale === true &&
+                        {picture.owner !== address && forsale === 1 &&
                         <Button
                             variant="outline-dark"
                             onClick={() => buyPicture(picture, count)}
                             className="w-75 py-3"
                         >
-                            Buy for {microAlgosToString(price) * count} ALGO
+                            Buy for {price * count} ALGO
                         </Button>
                         }
                         {picture.owner === address &&
@@ -104,7 +103,7 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
                         }
 
 
-                   {picture.owner === address &&
+                   {picture.owner === address && forsale === 1 &&
                             <Button
                                 variant="outline-danger"
                                 onClick={() => pauseSale(picture)}
@@ -114,7 +113,7 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
                             </Button>
                         }
 
-                   {picture.owner === address &&
+                   {picture.owner === address && forsale === 0 &&
                             <Button
                                 variant="outline-danger"
                                 onClick={() => resumeSale(picture)}
@@ -136,6 +135,10 @@ Picture.propTypes = {
     address: PropTypes.string.isRequired,
     picture: PropTypes.instanceOf(Object).isRequired,
     buyPicture: PropTypes.func.isRequired,
+    likePicture: PropTypes.func.isRequired,
+    pauseSale: PropTypes.func.isRequired,
+    resumeSale: PropTypes.func.isRequired,
+    changePrice: PropTypes.func.isRequired,
     deletePicture: PropTypes.func.isRequired
 };
 

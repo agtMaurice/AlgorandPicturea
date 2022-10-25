@@ -16,13 +16,14 @@ export const indexerClient = new algosdk.Indexer(config.indexerToken, config.ind
 
 export const myAlgoConnect = new MyAlgoConnect();
 
+
 export const minRound = 21540981;
 
 // https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0002.md
-export const pictureaNote = "picturea:uv2"
+export const pictureaNote = "picturea_dapp:uv0.3"
 
 // Maximum local storage allocation, immutable
-export const numLocalInts = 1;
+export const numLocalInts = 0;
 export const numLocalBytes = 0;
 // Maximum global storage allocation, immutable
 export const numGlobalInts = 4; // Global variables stored as Int: count, sold

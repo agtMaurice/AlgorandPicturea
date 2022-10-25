@@ -50,7 +50,7 @@ const Pictures = ({address, fetchBalance}) => {
 
     const likePicture = async (picture) => {
         setLoading(true);
-        likeAction(address, picture.appId)
+        likeAction(address, picture)
             .then(() => {
                 toast(<NotificationSuccess text="Picture liked successfully"/>);
                 getPictures();
@@ -66,7 +66,7 @@ const Pictures = ({address, fetchBalance}) => {
 
     const changePrice = async (picture, newprice) => {
         setLoading(true);
-        changepriceAction(address, picture.appId, newprice)
+        changepriceAction(address, picture, newprice)
             .then(() => {
                 toast(<NotificationSuccess text="Price changed successfully"/>);
                 getPictures();
@@ -81,7 +81,7 @@ const Pictures = ({address, fetchBalance}) => {
 
     const pauseSale = async (picture) => {
         setLoading(true);
-        pausesaleAction(address, picture.appId)
+        pausesaleAction(address, picture)
             .then(() => {
                 toast(<NotificationSuccess text="Sale paused successfully"/>);
                 getPictures();
@@ -97,7 +97,7 @@ const Pictures = ({address, fetchBalance}) => {
 
     const resumeSale = async (picture) => {
         setLoading(true);
-        resumesaleAction(address, picture.appId)
+        resumesaleAction(address, picture)
             .then(() => {
                 toast(<NotificationSuccess text="Sale resumed successfully"/>);
                 getPictures();
@@ -154,16 +154,16 @@ const Pictures = ({address, fetchBalance}) => {
             </div>
             <Row xs={1} sm={2} lg={3} className="g-3 mb-5 g-xl-4 g-xxl-5">
                 <>
-                    {pictures.map((picture, index) => (
+                    {pictures.map((data, index) => (
                         <Picture
                             address={address}
-                            picture={picture}
+                            picture={data}
                             buyPicture={buyPicture}
                             changePrice = {changePrice}
                             pauseSale = {pauseSale}
                             resumeSale = {resumeSale}
                             likePicture = {likePicture}
-                            deleteProduct={deletePicture}
+                            deletePicture={deletePicture}
                             key={index}
                         />
                     ))}

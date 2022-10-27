@@ -433,11 +433,11 @@ const getApplication = async (appId) => {
         }
 
         if (getField("LIKES", globalState) !== undefined) {
-            price = getField("LIKES", globalState).value.uint
+            likes = getField("LIKES", globalState).value.uint
         }
 
         if (getField("FORSALE", globalState) !== undefined) {
-            price = getField("FORSALE", globalState).value.uint
+            forsale = getField("FORSALE", globalState).value.uint
         }
 
         if (getField("SOLD", globalState) !== undefined) {

@@ -39,7 +39,7 @@ const compileProgram = async (programSource) => {
 
 // CREATE PRODUCT: ApplicationCreateTxn
 export const createPictureAction = async (senderAddress, picture) => {
-    console.log("Adding picture...")
+    
 
     let params = await algodClient.getTransactionParams().do();
 
@@ -76,26 +76,26 @@ export const createPictureAction = async (senderAddress, picture) => {
 
     // Sign & submit the transaction
     let signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
-    console.log("Signed transaction with txID: %s", txId);
+    ;
     await algodClient.sendRawTransaction(signedTxn.blob).do();
 
     // Wait for transaction to be confirmed
     let confirmedTxn = await algosdk.waitForConfirmation(algodClient, txId, 4);
 
-    // Get the completed Transaction
-    console.log("Transaction " + txId + " confirmed in round " + confirmedTxn["confirmed-round"]);
+    
+    
 
     // Get created application id and notify about completion
     let transactionResponse = await algodClient.pendingTransactionInformation(txId).do();
     let appId = transactionResponse['application-index'];
-    console.log("Created new app-id: ", appId);
+    
     return appId;
 }
 
 
 // LIKE PICTURE: Group transaction consisting of ApplicationCallTxn 
 export const likeAction = async (senderAddress, picture) => {
-    console.log("liking picture...");
+    
   
     let params = await algodClient.getTransactionParams().do();
   
@@ -123,7 +123,7 @@ export const likeAction = async (senderAddress, picture) => {
     let signedTxn = await myAlgoConnect.signTransaction(
       txnArray.map((txn) => txn.toByte())
     );
-    console.log("Signed group transaction");
+    
     let tx = await algodClient
       .sendRawTransaction(signedTxn.map((txn) => txn.blob))
       .do();
@@ -132,17 +132,12 @@ export const likeAction = async (senderAddress, picture) => {
     let confirmedTxn = await algosdk.waitForConfirmation(algodClient, tx.txId, 4);
   
     // Notify about completion
-    console.log(
-      "Group transaction " +
-        tx.txId +
-        " confirmed in round " +
-        confirmedTxn["confirmed-round"]
-    );
+    
   };
   
 // PAUSE SALE: Group transaction consisting of ApplicationCallTxn 
 export const pausesaleAction = async (senderAddress, picture) => {
-    console.log("Pausing sale...");
+    
   
     let params = await algodClient.getTransactionParams().do();
   
@@ -170,7 +165,7 @@ export const pausesaleAction = async (senderAddress, picture) => {
     let signedTxn = await myAlgoConnect.signTransaction(
       txnArray.map((txn) => txn.toByte())
     );
-    console.log("Signed group transaction");
+    
     let tx = await algodClient
       .sendRawTransaction(signedTxn.map((txn) => txn.blob))
       .do();
@@ -179,17 +174,12 @@ export const pausesaleAction = async (senderAddress, picture) => {
     let confirmedTxn = await algosdk.waitForConfirmation(algodClient, tx.txId, 4);
   
     // Notify about completion
-    console.log(
-      "Group transaction " +
-        tx.txId +
-        " confirmed in round " +
-        confirmedTxn["confirmed-round"]
-    );
+    
   };
   
 // RESUME SALE: Group transaction consisting of ApplicationCallTxn 
 export const resumesaleAction = async (senderAddress, picture) => {
-    console.log("resuming sale...");
+    
   
     let params = await algodClient.getTransactionParams().do();
   
@@ -217,7 +207,7 @@ export const resumesaleAction = async (senderAddress, picture) => {
     let signedTxn = await myAlgoConnect.signTransaction(
       txnArray.map((txn) => txn.toByte())
     );
-    console.log("Signed group transaction");
+    
     let tx = await algodClient
       .sendRawTransaction(signedTxn.map((txn) => txn.blob))
       .do();
@@ -226,19 +216,14 @@ export const resumesaleAction = async (senderAddress, picture) => {
     let confirmedTxn = await algosdk.waitForConfirmation(algodClient, tx.txId, 4);
   
     // Notify about completion
-    console.log(
-      "Group transaction " +
-        tx.txId +
-        " confirmed in round " +
-        confirmedTxn["confirmed-round"]
-    );
+    
   };
   
 
 
 // Edit PRICE: Group transaction consisting of ApplicationCallTxn
 export const changepriceAction = async (senderAddress, picture, newprice) => {
-    console.log("Change price...");
+    
   
     let params = await algodClient.getTransactionParams().do();
   
@@ -266,7 +251,7 @@ export const changepriceAction = async (senderAddress, picture, newprice) => {
     let signedTxn = await myAlgoConnect.signTransaction(
       txnArray.map((txn) => txn.toByte())
     );
-    console.log("Signed group transaction");
+    
     let tx = await algodClient
       .sendRawTransaction(signedTxn.map((txn) => txn.blob))
       .do();
@@ -275,17 +260,12 @@ export const changepriceAction = async (senderAddress, picture, newprice) => {
     let confirmedTxn = await algosdk.waitForConfirmation(algodClient, tx.txId, 4);
   
     // Notify about completion
-    console.log(
-      "Group transaction " +
-        tx.txId +
-        " confirmed in round " +
-        confirmedTxn["confirmed-round"]
-    );
+    
   };
 
 // BUY PRODUCT: Group transaction consisting of ApplicationCallTxn and PaymentTxn
 export const buyPictureAction = async (senderAddress, picture, count) => {
-    console.log("Buying picture...");
+    
 
     let params = await algodClient.getTransactionParams().do();
 
@@ -319,19 +299,19 @@ export const buyPictureAction = async (senderAddress, picture, count) => {
 
     // Sign & submit the group transaction
     let signedTxn = await myAlgoConnect.signTransaction(txnArray.map(txn => txn.toByte()));
-    console.log("Signed group transaction");
+    
     let tx = await algodClient.sendRawTransaction(signedTxn.map(txn => txn.blob)).do();
 
     // Wait for group transaction to be confirmed
     let confirmedTxn = await algosdk.waitForConfirmation(algodClient, tx.txId, 4);
 
     // Notify about completion
-    console.log("Group transaction " + tx.txId + " confirmed in round " + confirmedTxn["confirmed-round"]);
+    
 }
 
 // DELETE PRODUCT: ApplicationDeleteTxn
 export const deletePictureAction = async (senderAddress, index) => {
-    console.log("Deleting application...");
+    
 
     let params = await algodClient.getTransactionParams().do();
 
@@ -345,24 +325,24 @@ export const deletePictureAction = async (senderAddress, index) => {
 
     // Sign & submit the transaction
     let signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
-    console.log("Signed transaction with txID: %s", txId);
+    
     await algodClient.sendRawTransaction(signedTxn.blob).do();
 
     // Wait for transaction to be confirmed
     const confirmedTxn = await algosdk.waitForConfirmation(algodClient, txId, 4);
 
     // Get the completed Transaction
-    console.log("Transaction " + txId + " confirmed in round " + confirmedTxn["confirmed-round"]);
+    
 
     // Get application id of deleted application and notify about completion
     let transactionResponse = await algodClient.pendingTransactionInformation(txId).do();
     let appId = transactionResponse['txn']['txn'].apid;
-    console.log("Deleted app-id: ", appId);
+    
 }
 
 // GET PRODUCTS: Use indexer
 export const getPicturesAction = async () => {
-    console.log("Fetching pictures...")
+    
     let note = new TextEncoder().encode(pictureaNote);
     let encodedNote = Buffer.from(note).toString("base64");
 
@@ -383,7 +363,7 @@ export const getPicturesAction = async () => {
             }
         }
     }
-    console.log("Pictures fetched.")
+    
     return pictures
 }
 

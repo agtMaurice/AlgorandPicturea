@@ -4,7 +4,7 @@ import AddPicture from "./AddPicture";
 import Picture from "./Picture";
 import Loader from "../utils/Loader";
 import {NotificationError, NotificationSuccess} from "../utils/Notifications";
-import {buyPictureAction, createPictureAction, likeAction, changepriceAction, pausesaleAction, resumesaleAction,  deletePictureAction, getPicturesAction,} from "../../utils/marketplace";
+import {buyPictureAction, createPictureAction, likeAction,  pausesaleAction, resumesaleAction,  deletePictureAction, getPicturesAction,} from "../../utils/marketplace";
 import PropTypes from "prop-types";
 import {Row} from "react-bootstrap";
 
@@ -63,21 +63,6 @@ const Pictures = ({address, fetchBalance}) => {
             })
     };
 
-
-    const changePrice = async (picture, newprice) => {
-        setLoading(true);
-        changepriceAction(address, picture, newprice)
-            .then(() => {
-                toast(<NotificationSuccess text="Price changed successfully"/>);
-                getPictures();
-                fetchBalance(address);
-            })
-            .catch(error => {
-                console.log(error)
-                toast(<NotificationError text="Failed to change price."/>);
-                setLoading(false);
-            })
-    };
 
     const pauseSale = async (picture) => {
         setLoading(true);
@@ -159,7 +144,6 @@ const Pictures = ({address, fetchBalance}) => {
                             address={address}
                             picture={data}
                             buyPicture={buyPicture}
-                            changePrice = {changePrice}
                             pauseSale = {pauseSale}
                             resumeSale = {resumeSale}
                             likePicture = {likePicture}

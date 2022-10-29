@@ -4,4 +4,4 @@ Picturea is a dapp that helps people to sell their high quality pictures to othe
 
 # Live demo for testing.
 
-https://frabjous-sable-d7889d.netlify.app
+https://funny-marshmallow-cbcaf7.netlify.app

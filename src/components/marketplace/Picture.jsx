@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import {Badge, Button, Card, Col, FloatingLabel, Form, Stack} from "react-bootstrap";
 import {microAlgosToString, truncateAddress} from "../../utils/conversions";
 import Identicon from "../utils/Identicon";
+import {stringToMicroAlgos} from "../../utils/conversions";
 
-const Picture = ({address, picture, buyPicture, deletePicture, likePicture, changePrice, pauseSale, resumeSale}) => {
+const Picture = ({address, picture, buyPicture, deletePicture, likePicture, pauseSale, resumeSale}) => {
     const {name, image, description, price, likes, forsale, sold, appId, owner} = picture;
 
     const [count, setCount] = useState(1)
-    const [newprice, setNewprice] = useState(0)
+   
 
     return (
         <Col key={appId}>
@@ -54,7 +55,7 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
                             onClick={() => buyPicture(picture, count)}
                             className="w-75 py-3"
                         >
-                            Buy for {price * count} ALGO
+                            Buy for {microAlgosToString(price) * count} ALGO
                         </Button>
                         }
                         {picture.owner === address &&
@@ -81,27 +82,7 @@ const Picture = ({address, picture, buyPicture, deletePicture, likePicture, chan
                         }
 
 
-             {picture.owner === address &&
-    <>
-							<Form.Control
-								className={"pt-2 mb-1"}
-								type="number"
-								placeholder="Enter new price"
-								onChange={(e) => {
-									setNewprice(e.target.value);
-								}}
-							/>
-
-							<Button
-								variant="primary"
-								className={"mb-4"}
-								onClick={() => changePrice(picture, newprice)}
-							>
-							Change price
-							</Button>
-						</>
-                        }
-
+           
 
                    {picture.owner === address && forsale === 1 &&
                             <Button

@@ -14,7 +14,6 @@ class Picturea:
 
     class AppMethods:
         like = Bytes("like")
-        changeprice = Bytes("changeprice")
         pausesale = Bytes("pausesale")
         resumesale = Bytes("resumesale")
         buy = Bytes("buy")
@@ -68,22 +67,6 @@ class Picturea:
             ])
 
             return If(can_buy).Then(update_state).Else(Reject())
-
-
-    # allow the application's creator to change the price
-    def changeprice(self):
-        newprice = Txn.application_args[1]
-        return Seq([
-            Assert(
-                And( 
-                    Txn.sender() == Global.creator_address(),
-                    Global.group_size() == Int(1),
-                    Txn.application_args.length() == Int(2),
-                ),
-            ),
-            App.globalPut(self.Variables.price, Btoi(newprice)),
-            Approve()
-        ])
 
     
 
@@ -147,7 +130,6 @@ class Picturea:
              self.application_deletion()],
             # if the first argument of the transaction matches the AppMethods.buy value, the buy() method is called.
             [Txn.application_args[0] == self.AppMethods.like, self.like()],
-            [Txn.application_args[0] == self.AppMethods.changeprice, self.changeprice()],
             [Txn.application_args[0] == self.AppMethods.pausesale, self.pausesale()],
             [Txn.application_args[0] == self.AppMethods.resumesale, self.resumesale()],
             [Txn.application_args[0] == self.AppMethods.buy, self.buy()],

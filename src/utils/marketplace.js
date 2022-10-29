@@ -194,7 +194,7 @@ export const resumesaleAction = async (senderAddress, picture) => {
     let params = await algodClient.getTransactionParams().do();
   
     // Build required app args as Uint8Array
-    let pausesaleArg = new TextEncoder().encode("pausesale");
+    let pausesaleArg = new TextEncoder().encode("resumesale");
   
     let appArgs = [pausesaleArg];
   
@@ -236,52 +236,7 @@ export const resumesaleAction = async (senderAddress, picture) => {
   
 
 
-// Edit PRICE: Group transaction consisting of ApplicationCallTxn
-export const changepriceAction = async (senderAddress, picture, newprice) => {
-    console.log("Change price...");
-  
-    let params = await algodClient.getTransactionParams().do();
-  
-    // Build required app args as Uint8Array
-    let changepriceArg = new TextEncoder().encode("changeprice");
-    let price = new TextEncoder().encode(newprice);
-    let appArgs = [changepriceArg, price];
-  
-    // Create ApplicationCallTxn
-    let appCallTxn = algosdk.makeApplicationCallTxnFromObject({
-      from: senderAddress,
-      appIndex: picture.appId,
-      onComplete: algosdk.OnApplicationComplete.NoOpOC,
-      suggestedParams: params,
-      appArgs: appArgs,
-    });
-  
-    let txnArray = [appCallTxn];
-  
-    // Create group transaction out of previously build transactions
-    let groupID = algosdk.computeGroupID(txnArray);
-    for (let i = 0; i < 1; i++) txnArray[i].group = groupID;
-  
-    // Sign & submit the group transaction
-    let signedTxn = await myAlgoConnect.signTransaction(
-      txnArray.map((txn) => txn.toByte())
-    );
-    console.log("Signed group transaction");
-    let tx = await algodClient
-      .sendRawTransaction(signedTxn.map((txn) => txn.blob))
-      .do();
-  
-    // Wait for group transaction to be confirmed
-    let confirmedTxn = await algosdk.waitForConfirmation(algodClient, tx.txId, 4);
-  
-    // Notify about completion
-    console.log(
-      "Group transaction " +
-        tx.txId +
-        " confirmed in round " +
-        confirmedTxn["confirmed-round"]
-    );
-  };
+
 
 // BUY PRODUCT: Group transaction consisting of ApplicationCallTxn and PaymentTxn
 export const buyPictureAction = async (senderAddress, picture, count) => {
@@ -433,11 +388,11 @@ const getApplication = async (appId) => {
         }
 
         if (getField("LIKES", globalState) !== undefined) {
-            price = getField("LIKES", globalState).value.uint
+            likes = getField("LIKES", globalState).value.uint
         }
 
         if (getField("FORSALE", globalState) !== undefined) {
-            price = getField("FORSALE", globalState).value.uint
+            forsale = getField("FORSALE", globalState).value.uint
         }
 
         if (getField("SOLD", globalState) !== undefined) {
